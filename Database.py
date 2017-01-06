@@ -82,3 +82,5 @@ def insert_Stocks_table( ticker, company_name="", first_data_date=None, indices=
 def update_Stocks_indices(indices, ticker):
 	query("UPDATE Stocks SET indices='{0}' WHERE ticker='{1}';".format(indices,ticker))
 
+def insert_MarketDates_table(date):
+	insert(MARKETDATES_TABLE_NAME, "{0},{1}".format(date,"NULL"))

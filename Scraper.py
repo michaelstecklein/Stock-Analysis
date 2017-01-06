@@ -1,5 +1,6 @@
 import requests
 import csv
+import datetime
 from bs4 import BeautifulSoup
 from Database import *
 
@@ -15,15 +16,65 @@ NASDAQ = "NASDAQ"
 
 
 class DailyPrices:
-	pass
+	date = datetime.date.today()
+	openn = 0.0
+	high = 0.0
+	low = 0.0
+	close = 0.0
+	volume = 0
+	adj_close = 0.0
+	def __init__(self,d,o,h,l,c,v,a):
+		self.date = d
+		self.openn = o
+		self.high = h
+		self.low = l
+		self.close = c
+		self.volume = v
+		self.adj_close = a
 
 
 
 
 
-def scrape_price(ticker, day):
-	pass
 
+
+def __get_price_history_for_dates(ticker, start, end):
+	page = requests.get('http://chart.finance.yahoo.com/table.csv?s={0}&a={1}&b={2}&c={3}&d={4}&e={5}&f={6}&g=d&ignore=.csv'.format(ticker,start.day,start.month-1,start.year,end.day,end.month-1,end.year)) # csv of price history from Jan 1, 1970 to today
+	prices = csv.reader(page.text.splitlines())
+	daily_price_list = []
+	for p in prices:
+		days_price = DailyPrices(p[0],p[1],p[2],p[3],p[4],p[5],p[6])
+		daily_price_list.append(days_price)
+	return daily_price_list
+
+
+def __get_price_history(ticker):
+	start_date = datetime.date(1970,1,1)
+	today = datetime.date.today()
+	return __get_price_history_for_dates(ticker, start_date, today)
+
+
+__reference_stocks = ('IBM','KO')
+def scrape_stock_dates():
+	daily_price_lists = []
+	for ticker in __reference_stocks:
+		daily_price_lists.append(__get_price_history(ticker))
+	for i in range(0, len(daily_price_lists[0])):
+		date = daily_price_lists[0][i].date
+		print "Date: ", date
+		for l in daily_price_lists:
+			if date != l[i].date:
+				print "ERROR: dates do not match in 'scrape_stock_dates': {0}  {1}".format(date,l[i].date)
+				sys.exit(1)
+		insert_MarketDates_table(date)
+
+
+def scrape_price_history(ticker):
+	# scrape price history
+	prices = __get_price_history(ticker)
+	#print prices
+	# populate db
+	# set first_data_date for stock
 
 
 
