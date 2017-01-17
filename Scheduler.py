@@ -1,5 +1,6 @@
 import datetime
 import time
+import os.path
 from Log import *
 
 
@@ -30,3 +31,33 @@ def wait_for_scheduled_run(run_method):
 	global __LAST_RUN
 	__LAST_RUN = datetime.datetime.now()
 	log_stop("Finished scheduled run at {}".format(datetime.datetime.now()))
+
+
+
+
+
+
+
+
+
+
+# LAUNCHD run functionality
+__LAST_RUN_FILE = "launchd_last_run.log"
+
+def __record_run(run_method):
+	run_method()
+	f = open(__LAST_RUN_FILE, "w")
+	f.write(str(datetime.date.today()))
+	f.close()
+
+def launchd_run(run_method):
+	if not os.path.isfile(__LAST_RUN_FILE):
+		__record_run(run_method)
+		return
+	f = open(__LAST_RUN_FILE, "r")
+	contents = f.read()
+	f.close()
+	today = datetime.date.today()
+	if contents != str(today):
+		__record_run(run_method)
+	

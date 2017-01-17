@@ -61,6 +61,9 @@ def run():
 
 
 
+launchd_run(run) # will use launchd to time the run rather than my custom scheduler
 
+'''
 while True:
 	wait_for_scheduled_run(run)
+'''
