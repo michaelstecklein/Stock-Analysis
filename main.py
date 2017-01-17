@@ -38,18 +38,13 @@ def run():
 	update_portolio()
 	
 	# Populate DailyData table
-	'''
 	log_segment("Updating DailyData table")
 	update_stock_prices()
 
 	log_segment("Setup and update completed")
-	'''
-
-	# Update indicators
-	log_segment("Updating indicators")
-	update_indicators()
 	
 	# Create strategies
+	log_segment("Running strategies")
 	Strategy.add_to_list(Strategy.RSIStrategy())
 	Strategy.add_to_list(Strategy.RSIExpStrategy())
 
