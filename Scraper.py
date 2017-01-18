@@ -34,7 +34,10 @@ class DailyPrices:
 		self.close = c
 		self.volume = v
 		self.adj_close = a
-
+	def __str__(self):
+		return "date:{} open:{} high:{} low:{} close:{} volume:{} adj_close:{}".format(self.date,self.openn,self.high,self.low,self.close,self.volume,self.adj_close) 
+	def __repr__(self):
+		return "DailyPrices date:{} open:{} high:{} low:{} close:{} volume:{} adj_close:{}".format(self.date,self.openn,self.high,self.low,self.close,self.volume,self.adj_close) 
 
 def __get_price_history(ticker, start_date=datetime.date(1962,1,2), end_date=datetime.date.today()):
 	log("Getting price history for {0}".format(ticker))

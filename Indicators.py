@@ -10,28 +10,31 @@ NULL_INDICATOR_VALUE = -2
 
 def __RSIs_list(expTF, N, closes_arr):
 	rsi_arr = []
-	avg_gain = 0
-	avg_loss = 0
-	for i in range(0, len(closes_arr)):
+	gain_total = 0
+	loss_total = 0
+	for i in range(1, len(closes_arr)):
 		curr_gain = 0
 		curr_loss = 0
-		diff = 0
-		if i > 0:
-			diff = closes_arr[i] - closes_arr[i-1]
+		diff = closes_arr[i] - closes_arr[i-1]
 		if diff >= 0:
 			curr_gain = diff
+			gain_total += diff
 		else:
-			curr_loss = -1 * diff
-		if expTF:
+			curr_loss = diff * -1
+			loss_total += diff * -1
+		if i <= N:
+			rsi_arr.append(NULL_INDICATOR_VALUE)
+			continue
+		elif i == N+1: # first RSI value
+			avg_gain = gain_total / N
+			avg_loss = loss_total / N
+		elif expTF:
 			k = 2 / (N + 1)
 			avg_gain = curr_gain * k  +  avg_gain * (1 - k)
 			avg_loss = curr_loss * k  +  avg_loss * (1 - k)
 		else:
-			avg_gain = (avg_gain*(N-1) + curr_gain) / N
-			avg_loss = (avg_loss*(N-1) + curr_loss) / N
-		if i < N:
-			rsi_arr.append(NULL_INDICATOR_VALUE)
-			continue
+			avg_gain = (avg_gain * (N-1) + curr_gain) / N
+			avg_loss = (avg_loss * (N-1) + curr_loss) / N
 		if avg_loss == 0:
 			RSI = 100
 		else:
@@ -49,7 +52,7 @@ def RSIExp_list(N, closes_arr):
 	return __RSIs_list(True, N, closes_arr)
 
 def __RSIs(expTF, N, ticker, date):
-	closes_result = query("SELECT close FROM DailyData WHERE ticker='{0}' AND date<='{1}' ORDER BY date DESC LIMIT {2}".format(ticker,date,N+1))
+	closes_result = query("SELECT close FROM DailyData WHERE ticker='{0}' AND date<='{1}' ORDER BY date DESC LIMIT {2}".format(ticker,date,N*N))
 	closes_arr = [element for tupl in closes_result for element in tupl]
 	if len(closes_arr) == 0:
 		log_error("No entries found for RSI of {0} on {1}".format(ticker,date))
