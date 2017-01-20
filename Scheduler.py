@@ -45,7 +45,9 @@ def wait_for_scheduled_run(run_method):
 __LAST_RUN_FILE = "launchd_last_run.log"
 
 def __record_run(run_method):
+	log_start("Started scheduled run at {}".format(datetime.datetime.now()))
 	run_method()
+	log_stop("Finished scheduled run at {}".format(datetime.datetime.now()))
 	f = open(__LAST_RUN_FILE, "w")
 	f.write(str(datetime.date.today()))
 	f.close()

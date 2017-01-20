@@ -1,5 +1,5 @@
 
-cd /Users/michaelstecklein/Projects/StockAnalysis/
-date > start_time.log
+sudo cd /Users/michaelstecklein/Projects/StockAnalysis/
+sudo date > start_time.log
 #python main.py
-python -W ignore main.py
+sudo python -W ignore main.py

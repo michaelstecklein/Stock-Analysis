@@ -11,8 +11,8 @@ import Strategy
 
 
 # TODO:	
-#	watchlist, porfolio, and indices updaters
-#	clean up main
+#	Rename Strategies to something like Results, and make their output more organized
+#	Restructure RSI to be more organized
 
 
 
@@ -42,15 +42,17 @@ def run():
 	update_stock_prices()
 
 	log_segment("Setup and update completed")
+
+	# Update indicators
+	log_segment("Updating indicators")
+	update_indicators()
 	
-	# Create strategies
-	log_segment("Running strategies")
-	Strategy.add_to_list(Strategy.RSIStrategy())
-	Strategy.add_to_list(Strategy.RSIExpStrategy())
+	# Get results
+	# TODO
 
 	# Send email
 	log_segment("Sending email")
-	send_email_update(Strategy.results())
+	send_email_update("Results not yet implemented...")
 
 
 
