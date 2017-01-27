@@ -42,7 +42,7 @@ def wait_for_scheduled_run(run_method):
 
 
 # LAUNCHD run functionality
-__LAST_RUN_FILE = "launchd_last_run.log"
+__LAST_RUN_FILE = LOG_DIR+"/"+"launchd_last_run.log"
 
 def __record_run(run_method):
 	log_start("Started scheduled run at {}".format(datetime.datetime.now()))

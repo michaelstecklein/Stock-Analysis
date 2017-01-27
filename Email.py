@@ -2,6 +2,7 @@ import datetime
 import smtplib
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
+from Util import *
  
  
 def send_email_update(message):
@@ -10,7 +11,7 @@ def send_email_update(message):
 	msg = MIMEMultipart()
 	msg['From'] = fromaddr
 	msg['To'] = toaddr
-	msg['Subject'] = "Stock Analysis Update, {}".format(datetime.date.today())
+	msg['Subject'] = "Stock Analysis Update, {}".format(get_last_update_date())
 	 
 	body = "{}".format(message)
 	msg.attach(MIMEText(body, 'plain'))

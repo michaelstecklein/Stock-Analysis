@@ -4,6 +4,7 @@ from Database import *
 from Scraper import *
 from WatchlistPortfolioIndices import *
 from Indicators import *
+from Results import *
 from Log import *
 from Scheduler import *
 from Email import *
@@ -11,8 +12,7 @@ import Strategy
 
 
 # TODO:	
-#	Rename Strategies to something like Results, and make their output more organized
-#	Restructure RSI to be more organized
+#	Restructure Database.py to be more organized and editable
 
 
 
@@ -48,11 +48,13 @@ def run():
 	update_indicators()
 	
 	# Get results
-	# TODO
+	rsi = RSIResults()
+	indicator_results = rsi.get_results()
+	log(indicator_results)
 
 	# Send email
 	log_segment("Sending email")
-	send_email_update("Results not yet implemented...")
+	send_email_update(indicator_results)
 
 
 

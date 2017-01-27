@@ -1,7 +1,7 @@
 
 
 WATCHLIST = 	[
-		'FB', 'USO', 'UCO', 'AAPL', 'F', 'TXN', 'LMT', 'BAC', 'AYI', 'PNRA', 'CRM', '^VIX', 'XIV', 'SCI', 'USL', 'VHT', 'XLE', 'IBKR'
+		'FB', 'USO', 'UCO', 'AAPL', 'F', 'TXN', 'LMT', 'BAC', 'AYI', 'CRM', '^VIX', 'XIV', 'USL', 'VHT', 'XLE',
 		];
 
 PORTFOLIO = 	[

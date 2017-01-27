@@ -42,9 +42,11 @@ class DailyPrices:
 def __get_price_history(ticker, start_date=datetime.date(1962,1,2), end_date=datetime.date.today()):
 	log("Getting price history for {0}".format(ticker))
 	page = requests.get('http://chart.finance.yahoo.com/table.csv?s={0}&a={1}&b={2}&c={3}&d={4}&e={5}&f={6}&g=d&ignore=.csv'.format(ticker,start_date.month-1,start_date.day,start_date.year,end_date.month-1,end_date.day,end_date.year))
+	print "PAGE.TEXT ", page.text
 	prices = csv.reader(page.text.splitlines())
 	daily_price_list = []
 	for p in prices:
+		print "P ", p
 		days_price = DailyPrices(p[0],p[1],p[2],p[3],p[4],p[5],p[6])
 		daily_price_list.append(days_price)
 	return daily_price_list[1:]

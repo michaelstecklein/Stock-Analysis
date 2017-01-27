@@ -3,7 +3,8 @@ import os
 import datetime
 
 
-__LOG_FILE = "program.log"
+LOG_DIR = "logs"
+__LOG_FILE = LOG_DIR+"/"+"program.log"
 
 
 
