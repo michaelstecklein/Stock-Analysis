@@ -22,12 +22,22 @@ def __log(msg):
 def log(msg):
 	__log(msg)
 
+errors = []
+
 def log_error(err_msg, shutdown=False):
 	__log("ERROR ------------------------------------------------------")
 	__log(err_msg)
 	__log("------------------------------------------------------------")
 	if shutdown:
 		sys.exit(1)
+	else:
+		errors.append(err_msg)
+
+def get_errors_str():
+	errors_str = "\n";
+	for err in errors:
+		errors_str += err + "\n"
+	return errors_str
 
 def log_segment(segment_title):
 	'''

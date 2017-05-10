@@ -1,15 +1,45 @@
 
 
 WATCHLIST = 	[
-		'FB', 'USO', 'UCO', 'AAPL', 'F', 'TXN', 'LMT', 'BAC', 'AYI', 'CRM', '^VIX', 'XIV', 'USL', 'VHT', 'XLE',
+		'FB',
+		'USO',
+		'UCO',
+		'AAPL',
+		'GOOG',
+		'TSLA',
+		'F',
+		'TXN',
+		'LMT',
+		'BAC',
+		'AYI',
+		'CRM',
 		];
 
 PORTFOLIO = 	[
-		'FB', 'USO', 'UCO'
+		'USO',
+		'UCO',
+		'F',
+		'EDV'
 		];
 
 INDICES = 	[
-		'USO', 'UCO', '^VIX', 'XIV', 'USL', 'VHT', 'XLE'
+		'^GSPC', # S&P500
+		'^IXIC', # NASDAQ composite
+		'^DJI',  # DOW 30
+		'USO', # oil ETF
+		'UCO', # short-term oil ETF
+		'EDV', # long-term treasurty ETF
+		'BND', # total bond ETF
+		'VTI', # total market ETF
+		'VOO', # S&P500 ETF
+		'VO',  # medium cap ETF
+		'VB',  # small cap ETF
+		'VXUS',# total international ETF
+		'^VIX',# volatility (S&P500)
+		'XIV', # inverse ^VIX
+		'USL', # US oil long
+		'VHT', # healthcare ETF
+		'XLE'  # energy ETF
 		];
 
 

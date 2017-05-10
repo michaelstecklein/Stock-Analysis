@@ -33,18 +33,18 @@ class RSIResults(Results):
 		if self.__USE_SPACES_INSTEAD_TABS:
 			FIRST_SPACING = 7
 			SECOND_SPACING = 20
-			self.RESULT += "{}".format(t)
+			self.RESULT += str(t)
 			self.RESULT += " " * (FIRST_SPACING - len(t))
-			self.RESULT += "{}".format(r)
+			self.RESULT += str(r)
 			self.RESULT += " " * (SECOND_SPACING - len(r))
-			self.RESULT += "{}".format(m)
+			self.RESULT += str(m)
 		else:
 			self.RESULT += "{}\t{}\t{}".format(t,r,m)
 		self.RESULT += "\n"
 	
 	def __check_rsi(self, ticker, rsi):
 		if rsi >= self.__HIGH_RSI:
-			self.__warn(ticker, rsi, "HIGH")
+			self.__warn(ticker, rsi, "high")
 		elif rsi <= self.__LOW_RSI:
 			self.__warn(ticker, rsi, "LOW")
 		elif rsi <= self.__WARN_LOW_RSI:

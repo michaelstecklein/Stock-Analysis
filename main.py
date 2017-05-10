@@ -48,13 +48,14 @@ def run():
 	update_indicators()
 	
 	# Get results
+	log_segment("Getting results")
 	rsi = RSIResults()
 	indicator_results = rsi.get_results()
 	log(indicator_results)
 
 	# Send email
 	log_segment("Sending email")
-	send_email_update(indicator_results)
+	send_email_update(indicator_results+get_errors_str())
 
 
 

@@ -93,7 +93,10 @@ def update_Stocks_first_data_date(ticker, first_data_date):
 	query("UPDATE Stocks SET first_data_date='{0}' WHERE ticker='{1}';".format(first_data_date,ticker))
 
 def update_Stocks_last_update(ticker):
-	date = query("SELECT date FROM DailyData WHERE ticker='{0}' ORDER BY date DESC LIMIT 1;".format(ticker))[0][0]
+	result = query("SELECT date FROM DailyData WHERE ticker='{0}' ORDER BY date DESC LIMIT 1;".format(ticker))
+	if len(result) == 0:
+		return;
+	date = result[0][0]
 	query("UPDATE Stocks SET last_update_date='{0}' WHERE ticker='{1}';".format(date,ticker))
 
 def update_Stocks_watchlist(ticker,truefalse):

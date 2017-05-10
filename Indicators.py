@@ -116,7 +116,7 @@ def __update_ticker_RSI(ticker):
 		prev = (rsi, avg_gain, avg_loss)
 
 def __update_RSI():
-	#__create_rsi_table()
+	__create_rsi_table()
 	result = query("SELECT DISTINCT(ticker) FROM {} WHERE RSI={};".format(__RSI_TABLE_NAME,DEFAULT_INDICATOR_VALUE))
 	for row in result:
 		ticker = row[0]
@@ -124,5 +124,4 @@ def __update_RSI():
 		__update_ticker_RSI(ticker)
 
 def update_indicators():
-	log("Updating RSIs")
 	__update_RSI()

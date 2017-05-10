@@ -14,6 +14,11 @@ NASDAQ = "NASDAQ"
 SHOULD_SCRAPE_NYSE = False
 
 
+misc_stocks = {
+	('TSLA', "Tesla")
+}
+
+
 
 
 
@@ -42,30 +47,32 @@ class DailyPrices:
 def __get_price_history(ticker, start_date=datetime.date(1962,1,2), end_date=datetime.date.today()):
 	log("Getting price history for {0}".format(ticker))
 	page = requests.get('http://chart.finance.yahoo.com/table.csv?s={0}&a={1}&b={2}&c={3}&d={4}&e={5}&f={6}&g=d&ignore=.csv'.format(ticker,start_date.month-1,start_date.day,start_date.year,end_date.month-1,end_date.day,end_date.year))
-	print "PAGE.TEXT ", page.text
 	prices = csv.reader(page.text.splitlines())
 	daily_price_list = []
 	for p in prices:
-		print "P ", p
 		days_price = DailyPrices(p[0],p[1],p[2],p[3],p[4],p[5],p[6])
 		daily_price_list.append(days_price)
 	return daily_price_list[1:]
 
 
 def scrape_price_history(ticker, start_date=None):
-	# scrape price history
-	if start_date is None:
-		prices = __get_price_history(ticker)
-	else:
-		prices = __get_price_history(ticker,start_date=start_date)
-	# populate db
-	for p in prices:
-		insert_DailyData_table(ticker,p.date,p.openn,p.high,p.low,p.close,p.volume,p.adj_close)
-	# set first_data_date for stock
-	if start_date is None:
-		first_data_date = prices[-1].date
-		update_Stocks_first_data_date(ticker,first_data_date)
-		update_Indices_first_data_date(ticker,first_data_date)
+	try:
+		# scrape price history
+		if start_date is None:
+			prices = __get_price_history(ticker)
+		else:
+			prices = __get_price_history(ticker,start_date=start_date)
+		# populate db
+		for p in prices:
+			insert_DailyData_table(ticker,p.date,p.openn,p.high,p.low,p.close,p.volume,p.adj_close)
+		# set first_data_date for stock
+		if start_date is None:
+			first_data_date = prices[-1].date
+			update_Stocks_first_data_date(ticker,first_data_date)
+			update_Indices_first_data_date(ticker,first_data_date)
+	except Exception:
+		log_error("Error scraping price history for {0}".format(ticker), False)
+		return []
 
 def update_stock_prices():
 	'''
@@ -188,6 +195,11 @@ def scrape_DJI():
 def scrape_NASDAQ():
 	pass
 
+def scrape_misc():
+	for stock_info in misc_stocks:
+		ticker = stock_info[0]
+		company_name = stock_info[1]
+		insert_Stocks_table(ticker,company_name)
 
 def scrape_NYSE():
 	page = requests.get('http://www.nasdaq.com/screening/companies-by-industry.aspx?exchange=NYSE&render=download')
@@ -201,5 +213,6 @@ def scrape_indices():
 	scrape_SP500()
 	scrape_DJI()
 	scrape_NASDAQ()
+	scrape_misc()
 	if SHOULD_SCRAPE_NYSE:
 		scrape_NYSE()
