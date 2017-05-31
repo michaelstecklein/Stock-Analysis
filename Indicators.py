@@ -39,7 +39,8 @@ def __create_rsi_table():
 	query("INSERT IGNORE INTO {} (ticker, date, RSI, avg_gain, avg_loss) SELECT ticker, date, {}, {}, {} FROM DailyData;".format(__RSI_TABLE_NAME,DEFAULT_INDICATOR_VALUE,DEFAULT_INDICATOR_VALUE,DEFAULT_INDICATOR_VALUE))
 
 def __get_prev_rsi(ticker, date):
-	result = query("SELECT RSI,avg_gain,avg_loss FROM {} WHERE ticker='{}' AND date<'{}' ORDER BY date DESC LIMIT 1;".format(__RSI_TABLE_NAME,ticker,date))
+	qry = "SELECT RSI,avg_gain,avg_loss FROM {} WHERE ticker='{}' AND date<'{}' ORDER BY date DESC LIMIT 1;".format(__RSI_TABLE_NAME,ticker,date)
+	result = query(qry)
 	if len(result) == 0:
 		return None
 	return result[0]
@@ -68,7 +69,7 @@ def __update_ticker_RSI(ticker):
 			avg_gain = NULL_INDICATOR_VALUE
 			avg_loss = NULL_INDICATOR_VALUE
 		elif prev_rsi == DEFAULT_INDICATOR_VALUE:
-			raise RuntimeError("Previous RSI entry should have a default value due to query ordering")
+			raise RuntimeError("Previous RSI entry should have a default value due to query ordering: {} {}".format(date,ticker))
 		elif prev_rsi == NULL_INDICATOR_VALUE:
 			count = query("SELECT COUNT(*) FROM {} WHERE ticker='{}' AND date<='{}';".format(__RSI_TABLE_NAME,ticker,date))[0][0]
 			if count < __N:

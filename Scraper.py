@@ -44,13 +44,43 @@ class DailyPrices:
 	def __repr__(self):
 		return "DailyPrices date:{} open:{} high:{} low:{} close:{} volume:{} adj_close:{}".format(self.date,self.openn,self.high,self.low,self.close,self.volume,self.adj_close) 
 
-def __get_price_history(ticker, start_date=datetime.date(1962,1,2), end_date=datetime.date.today()):
+''' Yahoo changed their format, this is the old function as of 5/29/17
+def __get_price_history(ticker, start_date=datetime.date(1964,1,2), end_date=datetime.date.today()):
 	log("Getting price history for {0}".format(ticker))
 	page = requests.get('http://chart.finance.yahoo.com/table.csv?s={0}&a={1}&b={2}&c={3}&d={4}&e={5}&f={6}&g=d&ignore=.csv'.format(ticker,start_date.month-1,start_date.day,start_date.year,end_date.month-1,end_date.day,end_date.year))
 	prices = csv.reader(page.text.splitlines())
 	daily_price_list = []
 	for p in prices:
 		days_price = DailyPrices(p[0],p[1],p[2],p[3],p[4],p[5],p[6])
+		daily_price_list.append(days_price)
+	return daily_price_list[1:]
+'''
+
+date_dict = {'Jan':'01','Feb':'02','Mar':'03','Apr':'04','May':'05','Jun':'06','Jul':'07','Aug':'08','Sep':'09','Oct':'10','Nov':'11','Dec':'12'} 
+
+def __format_date(date_in):
+	spl = date_in.split("-")
+	date = spl[0]
+	month = date_dict[spl[1]]
+	year = spl[2]
+	if int(year) < 50:
+		year = "20{}".format(year)
+	else:
+		year = "19{}".format(year)
+	return "{}-{}-{}".format(year,month,date)
+
+def __get_price_history(ticker, start_date=datetime.date(1962,1,2), end_date=datetime.date.today()):
+	log("Getting price history for {0}".format(ticker))
+	url = "https://www.google.com/finance/historical?output=csv&q={0}&startdate={1}+{2}+{3}&enddate={4}+{5}+{6}".format(ticker,start_date.month,start_date.day,start_date.year,end_date.month,end_date.day,end_date.year)
+	page = requests.get(url)
+	prices = csv.reader(page.text.splitlines())
+	daily_price_list = []
+	firstTime = True
+	for p in prices:
+		if firstTime:
+			firstTime = False
+			continue
+		days_price = DailyPrices(__format_date(p[0]),p[1],p[2],p[3],p[4],p[5],p[4])
 		daily_price_list.append(days_price)
 	return daily_price_list[1:]
 
